@@ -32,6 +32,8 @@ class _HomePageTodoState extends State<HomePageTodo> {
     );
   }
 
+
+
   Widget _item(Todo element, int posicion) {
     return Dismissible(key: UniqueKey(),
       onDismissed: (direction) {
@@ -58,15 +60,29 @@ class _HomePageTodoState extends State<HomePageTodo> {
           color: element.completed == 1 ? Colors.blueGrey : Colors.white70,
           child: Center(
             child: ListTile(
-               leading: FlutterLogo(size: 56.0),
+               leading: _itemIcon(element),
                title: Text(element.title, style: TextStyle(fontWeight: FontWeight.bold),),
               subtitle: Text(element.body),
               isThreeLine: true,
+              onTap: ()=>_onTap(context, element, posicion),
             ),
         ),
         ),
       ),
     );
+  }
+
+  Widget _itemIcon(Todo item){
+    switch (item.tag) {
+      case "Default"://TodoType.DEFAULT:
+        return Icon(Icons.check, size: 45.0);
+      case "Call": //TodoType.CALL:
+        return Icon(Icons.call, size: 45.0);
+      case "Homework"://TodoType.HOME_WORK:
+        return Icon(Icons.contacts, size: 45.0);
+      default:
+        return Icon(Icons.dialpad, size: 45.0);
+    }
   }
 
   void _addTodo() async {
@@ -88,7 +104,9 @@ class _HomePageTodoState extends State<HomePageTodo> {
     setState(() {
       if (todos[posicion].completed == 0) {
           todos[posicion].completed = 1;
-        }
+        } else{
+        todos[posicion].completed = 0;
+      }
       }
     );
   }
